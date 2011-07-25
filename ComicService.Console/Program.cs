@@ -17,7 +17,7 @@ namespace ComicService.Console
             DownloadManager downloader = new DownloadManager(comicProvider, storageProvider);
 
             // download comic!
-            downloader.Download(new Comic { Title = "金田一", Url = "http://www.dm5.com/manhua-jintianyixinban/" });
+            downloader.Download(new Comic { Title = "草莓100%", Url = "http://www.dm5.com/manhua-caomei-100/" });
         }
     }
 }

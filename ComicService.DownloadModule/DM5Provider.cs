@@ -28,11 +28,15 @@ namespace ComicService.DownloadModule
             var volumeNodes = document.DocumentNode.SelectNodes("//ul[contains(@class, 'nr6')]/li/a");
             foreach (var volumeNode in volumeNodes)
             {
-                result.Add(new Volume
+                string href = volumeNode.GetAttributeValue("href", "");
+                if (!href.ToLowerInvariant().Contains("javascript"))
                 {
-                    Title = volumeNode.InnerText,
-                    Url = DOMAIN + volumeNode.GetAttributeValue("href", "")
-                });
+                    result.Add(new Volume
+                    {
+                        Title = volumeNode.InnerText,
+                        Url = DOMAIN + href
+                    });
+                }
             }
             return result;
         }
