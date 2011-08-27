@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ComicService.DownloadModule;
 using ComicService.Model;
+using Ninject;
 
 namespace ComicService.Console
 {
@@ -12,12 +13,13 @@ namespace ComicService.Console
         static void Main(string[] args)
         {
             // setup dependencies
-            IComicProvider comicProvider = new DM5Provider();
-            IStorageProvider storageProvider = new FileSystemStorageProvider("D:/Comics");
-            DownloadManager downloader = new DownloadManager(comicProvider, storageProvider);
+            IoC.Container.Bind<IComicProvider>().To<DM5Provider>();
+            IoC.Container.Bind<IStorageProvider>().To<FileSystemStorageProvider>().WithConstructorArgument("rootPath", "D:/Comics");
+            IoC.Container.Bind<DownloadManager>().ToSelf();
 
             // download comic!
-            downloader.Download(new Comic { Title = "草莓100%", Url = "http://www.dm5.com/manhua-caomei-100/" });
+            var downloader = IoC.Container.Get<DownloadManager>();
+            downloader.Download(new Comic { Title = "我們的足球場wer", Url = "http://www.dm5.com/manhua-womendezuqiuchang-zuqiuhaoxiaozi/" });
         }
     }
 }

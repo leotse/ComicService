@@ -5,26 +5,19 @@ using System.Text;
 using System.Net;
 using ComicService.Model;
 using HtmlAgilityPack;
+using Ninject;
 
 namespace ComicService.DownloadModule
 {
     public class DownloadManager
     {
 
-        #region fields
+        #region dependencies
 
-        private IComicProvider _comicProvider;
-        private IStorageProvider _storageProvider;
-
-        #endregion
-
-        #region ctor
-
-        public DownloadManager(IComicProvider comicProvider, IStorageProvider storageProvider)
-        {
-            _comicProvider = comicProvider;
-            _storageProvider = storageProvider;
-        }
+        [Inject]
+        public IComicProvider ComicProvider { get; set; }
+        [Inject]
+        public IStorageProvider StorageProvider { get; set; }
 
         #endregion
 
@@ -32,13 +25,13 @@ namespace ComicService.DownloadModule
 
         public void Download(Comic comic)
         {
-            var volumes = _comicProvider.GetVolumes(comic);
+            var volumes = ComicProvider.GetVolumes(comic);
             foreach (var volume in volumes)
             {
-                var pages= _comicProvider.GetPages(volume);
+                var pages = ComicProvider.GetPages(volume);
                 foreach (var page in pages)
                 {
-                    _storageProvider.Save(comic, volume, page);
+                    StorageProvider.Save(comic, volume, page);
                 }
             }
         }

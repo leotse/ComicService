@@ -31,7 +31,7 @@ namespace ComicService.DownloadModule
                 string href = volumeNode.GetAttributeValue("href", "");
                 if (!href.ToLowerInvariant().Contains("javascript"))
                 {
-                    result.Add(new Volume
+                    result.Insert(0, new Volume
                     {
                         Title = volumeNode.InnerText,
                         Url = DOMAIN + href
